@@ -94,10 +94,6 @@ namespace rskp1.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("integer")
-                        .HasColumnName("doctor_id");
-
                     b.Property<string>("FacilityName")
                         .IsRequired()
                         .HasColumnType("text")
@@ -110,9 +106,6 @@ namespace rskp1.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_facilities");
-
-                    b.HasIndex("DoctorId")
-                        .HasDatabaseName("ix_facilities_doctor_id");
 
                     b.ToTable("facilities", (string)null);
                 });
@@ -175,7 +168,7 @@ namespace rskp1.Migrations
                         .HasConstraintName("fk_appointments_doctors_app_doc_id");
 
                     b.HasOne("Patient", "AppPatient")
-                        .WithMany("Appointment")
+                        .WithMany()
                         .HasForeignKey("AppPatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -195,14 +188,6 @@ namespace rskp1.Migrations
                     b.Navigation("Facility");
                 });
 
-            modelBuilder.Entity("Facility", b =>
-                {
-                    b.HasOne("Doctor", null)
-                        .WithMany("Facility")
-                        .HasForeignKey("DoctorId")
-                        .HasConstraintName("fk_facilities_doctors_doctor_id");
-                });
-
             modelBuilder.Entity("MedicalFile", b =>
                 {
                     b.HasOne("Patient", "Patient")
@@ -213,16 +198,6 @@ namespace rskp1.Migrations
                         .HasConstraintName("fk_medical_files_patients_patient_id");
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("Doctor", b =>
-                {
-                    b.Navigation("Facility");
-                });
-
-            modelBuilder.Entity("Patient", b =>
-                {
-                    b.Navigation("Appointment");
                 });
 #pragma warning restore 612, 618
         }

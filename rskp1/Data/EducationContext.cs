@@ -17,10 +17,9 @@ public class EducationContext : DbContext
         modelBuilder.Entity<Appointment>().Property(m => m.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Facility>().Property(m => m.Id).ValueGeneratedOnAdd();
 
-        //modelBuilder.Entity<Doctor>().HasMany(f => f.Facility);
         modelBuilder.Entity<Appointment>().HasOne(f => f.AppDoc);
+        modelBuilder.Entity<Appointment>().HasOne(f => f.AppPatient);
         modelBuilder.Entity<MedicalFile>().HasOne(f => f.Patient);
-        modelBuilder.Entity<Patient>().HasMany(f => f.Appointment).WithOne(p => p.AppPatient);
 
 
     }

@@ -8,5 +8,5 @@ public class Patient
         [Column(Order = 1)]
         public int Id { get; set; }
         public string FullName { get; set; }
-        public IEnumerable<Appointment> Appointment { get; set; }
+        //public IEnumerable<Appointment> Appointment { get; set; }
     }

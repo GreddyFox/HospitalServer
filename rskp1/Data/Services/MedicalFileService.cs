@@ -31,7 +31,7 @@ public class MedicalFileService
 
     public async Task<MedicalFile> GetMedicalFile(int id)
     {
-        var result = _context.MedicalFiles.Include(m => m.Patient).ThenInclude(p=> p.Appointment).FirstOrDefault(m => m.Id == id);
+        var result = _context.MedicalFiles.Include(m => m.Patient).FirstOrDefault(m => m.Id == id);   //убрал ThenInclude(p=> p.Appointment).
         return await Task.FromResult(result);
     }
 

@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace rskp1.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class MyAwesomeMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,6 +25,20 @@ namespace rskp1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "facilities",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    facility_name = table.Column<string>(type: "text", nullable: false),
+                    price = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_facilities", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "patients",
                 columns: table => new
                 {
@@ -35,46 +49,6 @@ namespace rskp1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_patients", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "facilities",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    facility_name = table.Column<string>(type: "text", nullable: false),
-                    price = table.Column<string>(type: "text", nullable: false),
-                    doctor_id = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_facilities", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_facilities_doctors_doctor_id",
-                        column: x => x.doctor_id,
-                        principalTable: "doctors",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "medical_files",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    patient_id = table.Column<int>(type: "integer", nullable: false),
-                    start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_medical_files", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_medical_files_patients_patient_id",
-                        column: x => x.patient_id,
-                        principalTable: "patients",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,6 +84,26 @@ namespace rskp1.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "medical_files",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    start_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_medical_files", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_medical_files_patients_patient_id",
+                        column: x => x.patient_id,
+                        principalTable: "patients",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "ix_appointments_app_doc_id",
                 table: "appointments",
@@ -126,11 +120,6 @@ namespace rskp1.Migrations
                 column: "facility_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_facilities_doctor_id",
-                table: "facilities",
-                column: "doctor_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_medical_files_patient_id",
                 table: "medical_files",
                 column: "patient_id");
@@ -145,13 +134,13 @@ namespace rskp1.Migrations
                 name: "medical_files");
 
             migrationBuilder.DropTable(
+                name: "doctors");
+
+            migrationBuilder.DropTable(
                 name: "facilities");
 
             migrationBuilder.DropTable(
                 name: "patients");
-
-            migrationBuilder.DropTable(
-                name: "doctors");
         }
     }
 }
